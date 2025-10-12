@@ -79,7 +79,7 @@ function numberToWords(num) {
 
   if (words === "") words = "Zero";
 
-  words += " Rupees";
+  words += "";
 
   // Handle paise part
   if (paise > 0) {
@@ -92,10 +92,10 @@ function numberToWords(num) {
         words += " " + ones[paise % 10];
       }
     }
-    words += " Rupees";
+    words += "";
   }
 
-  return words + " Only";
+  return words + "";
 }
 
 // Function to update the invoice preview
@@ -108,6 +108,8 @@ function updateInvoicePreview() {
   const placeOfSupply = document.getElementById("placeOfSupply").value;
   const gstRate = parseFloat(document.getElementById("gstRate").value);
   const receiverName = document.getElementById("receiverName").value;
+  const eWayBill = document.getElementById("eWayBill").value || "";
+  const receiverGSTN = document.getElementById("receiverGSTN").value || "";
   const receiverAddress =
     document.getElementById("receiverAddress").value || "";
   const consigneeName = document.getElementById("consigneeName").value || "";
@@ -162,11 +164,11 @@ function updateInvoicePreview() {
   // Generate the invoice preview HTML
   invoicePreview.innerHTML = `
           <div class="company-header">
-              <div class="company-name">SURYA LAKSHMI TRADERS</div>
+              <div class="company-name">SURYALAKSHMI TRADERS</div>
               <div class="company-address">H.NO, PVT SV-1605, KH NO.159, GALI NO.5/11, SAMTA VIHAR MUKUNDPUR, NEW DELHI-110042</div>
               <div class="company-contact">Deals in: Paints, Epoxy Paints, Putty, Water Proofing, Primer, Hardware & Work contract</div>
               <div class="company-contact">Mobile: 9729708912, 8168239664 | E-mail: suryalakshmitraders98@gmail.com</div>
-              <div class="company-contact">GSTN: 07ESVPK4501D12P</div>
+              <div class="company-contact">GSTN: 07ESVPK4501D1ZP</div>
           </div>
           
           <div class="invoice-title">INVOICE</div>
@@ -176,6 +178,10 @@ function updateInvoicePreview() {
       <td><strong>Invoice No:</strong> ${invoiceNumber}</td>
       <td><strong>Date:</strong> ${formatDate(invoiceDate)}</td>
       <td><strong>Place of Supply:</strong> ${placeOfSupply}</td>
+    </tr>
+    <tr>
+      <td><strong>GSTN:</strong> ${receiverGSTN}</td>
+      <td><strong>E-WAY Bill:</strong> ${eWayBill}</td>
       <td><strong>Vehicle No:</strong> ${vehicleNo}</td>
     </tr>
   </table>
@@ -235,9 +241,9 @@ function updateInvoicePreview() {
           <div class="invoice-footer">
               <div class="totals-container">
                   <div class="amount-in-words">
-                      <h4>G.Total in Words : Rs. ${numberToWords(
+                      <h4>G.Total in Words : Rs. <span>${numberToWords(
                         grandTotal
-                      )}</h4>
+                      )} Only</span></h4>
                   </div>
                   <div class="totals">
                       <div class="total-row">
@@ -304,7 +310,7 @@ function updateInvoicePreview() {
              <div class="bottom-section">
   <div class="left-column">
     <div class="bank-details">
-      <p><strong>SURYA LAKSHMI TRADERS</strong></p>
+      <p><strong>SURYALAKSHMI TRADERS</strong></p>
       <p>BANK - YES BANK | A/C NO - 062261900003140</p>
       <p>RTGS/IFSC CODE - YESB0000622</p>
       <p>Branch - Rohini Sector 18, New Delhi 110085</p>
@@ -319,7 +325,7 @@ function updateInvoicePreview() {
 
   <div class="signature">
     <img src="sign.jpg" alt="Signature" width="100" /> 
-    <p>For SURYA LAKSHMI TRADERS</p>
+    <p>For SURYALAKSHMI TRADERS</p>
     <p style="margin-top: 5px;">Authorised Sign.</p>
     <p style="margin-top: 5px;">Customer's Signature</p>
   </div>
