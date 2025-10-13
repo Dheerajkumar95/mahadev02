@@ -138,7 +138,7 @@ function updateInvoicePreview() {
   });
 
   // Determine if interstate or intrastate supply
-  const businessState = "HR"; // Replace with your actual business state
+  const businessState = "DL"; // Replace with your actual business state
   const isInterState = placeOfSupply !== businessState;
 
   // Calculate tax values
