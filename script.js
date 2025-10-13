@@ -131,7 +131,7 @@ function updateInvoicePreview() {
     const unit = row.querySelector(".item-unit").value || "Pcs";
     const rate = parseFloat(row.querySelector(".item-rate").value) || 0;
     const discount = parseFloat(row.querySelector(".item-discount").value) || 0;
-    const amount = qty * rate - discount;
+    const amount = unit * rate - discount;
 
     items.push({ slNo, hsn, desc, qty, unit, rate, discount, amount });
     subtotal += amount;
