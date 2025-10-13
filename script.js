@@ -127,7 +127,7 @@ function updateInvoicePreview() {
     const slNo = index + 1;
     const hsn = row.querySelector(".item-hsn").value || "";
     const desc = row.querySelector(".item-desc").value || "Item";
-    const qty = parseFloat(row.querySelector(".item-qty").value) || 0;
+    const qty = row.querySelector(".item-qty").value || "";
     const unit = row.querySelector(".item-unit").value || "Pcs";
     const rate = parseFloat(row.querySelector(".item-rate").value) || 0;
     const discount = parseFloat(row.querySelector(".item-discount").value) || 0;
@@ -137,8 +137,7 @@ function updateInvoicePreview() {
     subtotal += amount;
   });
 
-  // Determine if interstate or intrastate supply
-  const businessState = "DL"; // Replace with your actual business state
+  const businessState = "DL";
   const isInterState = placeOfSupply !== businessState;
 
   // Calculate tax values
