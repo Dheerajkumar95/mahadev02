@@ -309,6 +309,23 @@ function updateInvoicePreview() {
     </div>
   `;
 }
+function removeItemRow(index) {
+  const itemsBody = document.getElementById("itemsBody");
+  const rows = itemsBody.querySelectorAll("tr");
+
+  if (rows[index]) {
+    rows[index].remove();
+  }
+
+  // Reorder SL.No and reassign remove buttons
+  Array.from(itemsBody.children).forEach((row, i) => {
+    row.cells[0].textContent = i + 1; // Update SL.No
+    const removeBtn = row.querySelector(".remove-btn");
+    if (removeBtn) removeBtn.setAttribute("onclick", `removeItemRow(${i})`);
+  });
+
+  updateInvoicePreview();
+}
 
 // Add new item row
 function addItemRow() {
@@ -320,11 +337,14 @@ function addItemRow() {
     <td>${slNo}</td>
     <td><input type="text" class="item-hsn" placeholder="HSN Code"></td>
     <td><input type="text" class="item-desc" placeholder="Item description"></td>
-    <td><input type="number" class="item-qty" value="1" min="1"></td>
-    <td><input type="text" class="item-unit" value="Pcs"></td>
+    <td><input type="text" class="item-qty"></td>
+    <td><input type="number" class="item-unit" value="1" min="1"></td>
     <td><input type="number" class="item-rate" value="0.00" step="0.01"></td>
     <td><input type="number" class="item-discount" value="0.00" step="0.01"></td>
     <td class="item-amount">0.00</td>
+    <td><button class="remove-btn" onclick="removeItemRow(${
+      slNo - 1
+    })">❌</button></td>
   `;
   itemsBody.appendChild(newRow);
 
