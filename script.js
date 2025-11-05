@@ -283,7 +283,6 @@ function updateInvoicePreview() {
               : ""
           }
           ${taxSection}
-          <div class="total-row"><span>Round Off</span><span>₹${roundOff}</span></div>
           <div class="total-row grand-total"><span>Grand Total</span><span>₹${grandTotal.toFixed(
             0
           )}</span></div>
