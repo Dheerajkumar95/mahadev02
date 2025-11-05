@@ -153,8 +153,14 @@ function updateInvoicePreview() {
   }
 
   // Grand total
-  const grandTotal =
+  const grandTotalBeforeRound =
     subtotal + cgstAmount + sgstAmount + igstAmount + deliveryCharge;
+
+  // Round off the grand total to the nearest integer
+  const grandTotal = Math.round(grandTotalBeforeRound);
+
+  // Calculate round off difference (for display)
+  const roundOff = (grandTotal - grandTotalBeforeRound).toFixed(2);
 
   // Format date
   const formatDate = (dateString) => {
@@ -277,9 +283,9 @@ function updateInvoicePreview() {
               : ""
           }
           ${taxSection}
-          <div class="total-row"><span>Round Off</span><span>₹0.00</span></div>
+          <div class="total-row"><span>Round Off</span><span>₹${roundOff}</span></div>
           <div class="total-row grand-total"><span>Grand Total</span><span>₹${grandTotal.toFixed(
-            2
+            0
           )}</span></div>
         </div>
       </div>
