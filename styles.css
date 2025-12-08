@@ -303,6 +303,81 @@ select {
   font-size: 12px;
   min-width: 220px;
 }
+/* CSS (put in styles.css or <style> block) */
+.dgst {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem; /* subtle hit area */
+  transition: background 0.15s;
+}
+
+/* native checkbox — keep it accessible but visually hidden */
+.dgst input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+
+/* responsive circle size using clamp(min, preferred, max) */
+.custom-circle {
+  display: inline-block;
+  width: clamp(18px, 2.2vw, 18px);
+  height: clamp(18px, 2.2vw, 18px);
+  min-width: 9px;
+  min-height: 9px;
+  border-radius: 50%;
+  border: 2px solid #444;
+  box-sizing: border-box;
+  position: relative;
+  transition: background 0.12s, border-color 0.12s, transform 0.06s;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+/* checked state: show inner filled dot */
+.dgst input[type="checkbox"]:checked + .custom-circle {
+  background: #1dd14aff; /* fill color when checked */
+}
+
+/* inner dot for nicer look (optional) */
+.dgst input[type="checkbox"]:checked + .custom-circle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+}
+
+/* label text responsive sizing */
+.label-text {
+  font-size: clamp(0.5rem, 1.8vw, 0.9rem);
+  line-height: 0.5;
+  color: #111;
+}
+
+/* for small screens allow wrapping */
+@media (max-width: 360px) {
+  .dgst {
+    gap: 0.5rem;
+  }
+  .label-text {
+    font-size: 0.88rem;
+  }
+}
 
 /* Print Styles */
 @media print {

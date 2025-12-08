@@ -117,6 +117,12 @@ function updateInvoicePreview() {
   const vehicleNo = document.getElementById("vehicleNo").value || "";
   const deliveryCharge =
     parseFloat(document.getElementById("deliveryCharge").value) || 0;
+  const applyDeliveryGST = document.getElementById("applyDeliveryGST").checked;
+
+  let deliveryGST = 0;
+  if (applyDeliveryGST && deliveryCharge > 0) {
+    deliveryGST = deliveryCharge * 0.18;
+  }
 
   // Calculate subtotal
   let subtotal = 0;
@@ -144,20 +150,18 @@ function updateInvoicePreview() {
   let cgstAmount = 0;
   let sgstAmount = 0;
   let igstAmount = 0;
-
   if (isInterState) {
-    igstAmount = subtotal * (igstRate / 100);
+    igstAmount = subtotal * (igstRate / 100) + deliveryGST;
   } else {
-    cgstAmount = subtotal * (cgstRate / 100);
-    sgstAmount = subtotal * (sgstRate / 100);
+    cgstAmount = subtotal * (cgstRate / 100) + deliveryGST / 2;
+    sgstAmount = subtotal * (sgstRate / 100) + deliveryGST / 2;
   }
 
-  // Grand total
   const grandTotalBeforeRound =
     subtotal + cgstAmount + sgstAmount + igstAmount + deliveryCharge;
 
   // Round off the grand total to the nearest integer
-  const grandTotal = Math.round(grandTotalBeforeRound);
+  const grandTotal = Math.ceil(grandTotalBeforeRound);
 
   // Calculate round off difference (for display)
   const roundOff = (grandTotal - grandTotalBeforeRound).toFixed(2);
@@ -168,6 +172,9 @@ function updateInvoicePreview() {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
     return new Date(dateString).toLocaleDateString("en-GB", options);
   };
+  document
+    .getElementById("applyDeliveryGST")
+    .addEventListener("change", updateInvoicePreview);
 
   // Tax section
   const taxSection = isInterState
