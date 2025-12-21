@@ -103,9 +103,6 @@ function updateInvoicePreview() {
   const invoiceNumber = document.getElementById("invoiceNumber").value;
   const invoiceDate = document.getElementById("invoiceDate").value;
   const placeOfSupply = document.getElementById("placeOfSupply").value;
-  const cgstRate = parseFloat(document.getElementById("cgstRate").value) || 0;
-  const sgstRate = parseFloat(document.getElementById("sgstRate").value) || 0;
-  const igstRate = parseFloat(document.getElementById("igstRate").value) || 0;
   const receiverName = document.getElementById("receiverName").value;
   const eWayBill = document.getElementById("eWayBill").value || "";
   const receiverGSTN = document.getElementById("receiverGSTN").value || "";
@@ -129,32 +126,54 @@ function updateInvoicePreview() {
   const items = [];
   const itemRows = document.querySelectorAll("#itemsBody tr");
 
+  let totalGST = 0; // 👈 sab items ka GST yahan add hoga
+
   itemRows.forEach((row, index) => {
     const slNo = index + 1;
     const hsn = row.querySelector(".item-hsn").value || "";
     const desc = row.querySelector(".item-desc").value || "Item";
     const qty = row.querySelector(".item-qty").value || "";
-    const unit = row.querySelector(".item-unit").value || "Pcs";
+    const unit = row.querySelector(".item-unit").value || "";
     const rate = parseFloat(row.querySelector(".item-rate").value) || 0;
-    const discount = parseFloat(row.querySelector(".item-discount").value) || 0;
-    const amount = unit * rate - discount;
+    const gst = parseFloat(row.querySelector(".gst").value) || 0;
 
-    items.push({ slNo, hsn, desc, qty, unit, rate, discount, amount });
-    subtotal += amount;
+    const taxableAmount = unit * rate;
+
+    const gstAmount = taxableAmount * (gst / 100);
+
+    totalGST += gstAmount;
+
+    const tamount = taxableAmount + gstAmount;
+
+    items.push({
+      slNo,
+      hsn,
+      desc,
+      qty,
+      unit,
+      rate,
+      gst,
+      tamount,
+      taxableAmount,
+    });
+
+    subtotal += taxableAmount; // only taxable value
   });
+
+  console.log("TOTAL GST OF ALL ITEMS:", totalGST.toFixed(2));
 
   const businessState = "DL";
   const isInterState = placeOfSupply !== businessState;
 
-  // Calculate tax values
   let cgstAmount = 0;
   let sgstAmount = 0;
   let igstAmount = 0;
+
   if (isInterState) {
-    igstAmount = subtotal * (igstRate / 100) + deliveryGST;
+    igstAmount = totalGST + deliveryGST;
   } else {
-    cgstAmount = subtotal * (cgstRate / 100) + deliveryGST / 2;
-    sgstAmount = subtotal * (sgstRate / 100) + deliveryGST / 2;
+    cgstAmount = totalGST / 2 + deliveryGST / 2;
+    sgstAmount = totalGST / 2 + deliveryGST / 2;
   }
 
   const grandTotalBeforeRound =
@@ -179,17 +198,17 @@ function updateInvoicePreview() {
   // Tax section
   const taxSection = isInterState
     ? `
-      <div class="total-row"><span>(+) IGST (${igstRate}%)</span><span>₹${igstAmount.toFixed(
+      <div class="total-row"><span>(+) IGST </span><span>₹${igstAmount.toFixed(
         2
       )}</span></div>
       <div class="total-row"><span>(+) CGST</span><span>₹0.00</span></div>
       <div class="total-row"><span>(+) SGST</span><span>₹0.00</span></div>
     `
     : `
-      <div class="total-row"><span>(+) CGST (${cgstRate}%)</span><span>₹${cgstAmount.toFixed(
+      <div class="total-row"><span>(+) CGST </span><span>₹${cgstAmount.toFixed(
         2
       )}</span></div>
-      <div class="total-row"><span>(+) SGST (${sgstRate}%)</span><span>₹${sgstAmount.toFixed(
+      <div class="total-row"><span>(+) SGST </span><span>₹${sgstAmount.toFixed(
         2
       )}</span></div>
       <div class="total-row"><span>(+) IGST</span><span>₹0.00</span></div>
@@ -247,8 +266,9 @@ function updateInvoicePreview() {
           <th>Qty</th>
           <th>Unit</th>
           <th>Rate</th>
-          <th>Discount</th>
+          <th>Gst %</th>
           <th>Amount</th>
+          <th>Total Amount</th>
         </tr>
       </thead>
       <tbody>
@@ -262,8 +282,9 @@ function updateInvoicePreview() {
             <td>${item.qty}</td>
             <td>${item.unit}</td>
             <td>₹${item.rate.toFixed(2)}</td>
-            <td>₹${item.discount.toFixed(2)}</td>
-            <td>₹${item.amount.toFixed(2)}</td>
+            <td>${item.gst}</td>
+            <td>₹${item.taxableAmount}</td>
+            <td>₹${item.tamount}</td>
           </tr>
         `
           )
@@ -274,7 +295,7 @@ function updateInvoicePreview() {
     <div class="invoice-footer">
       <div class="totals-container">
         <div class="amount-in-words">
-          <h4>Amount in Words: <span>Rupees ${numberToWords(
+          <h4>Taxable in Words: <span>Rupees ${numberToWords(
             grandTotal
           )} Only</span></h4>
         </div>
@@ -319,6 +340,9 @@ function updateInvoicePreview() {
         </div>
       </div>
     </div>
+    <div class="invoice-note">
+      This is a computer-generated original invoice; no physical signature is required.
+    </div>
   `;
 }
 function removeItemRow(index) {
@@ -352,7 +376,7 @@ function addItemRow() {
     <td><input type="text" class="item-qty"></td>
     <td><input type="number" class="item-unit" value="1" min="1"></td>
     <td><input type="number" class="item-rate" value="0.00" step="0.01"></td>
-    <td><input type="number" class="item-discount" value="0.00" step="0.01"></td>
+    <td><input type="number" class="gst" value="0.00" step="0.01"></td>
     <td class="item-amount">0.00</td>
     <td><button class="remove-btn" onclick="removeItemRow(${
       slNo - 1

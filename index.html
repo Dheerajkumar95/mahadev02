@@ -36,39 +36,6 @@
             <label for="placeOfSupply">Place of Supply</label>
             <input type="text" id="placeOfSupply" value="" />
           </div>
-          <div class="form-group">
-            <label for="cgstRate">CGST Rate (%)</label>
-            <input
-              type="number"
-              id="cgstRate"
-              value=""
-              min="0"
-              max="100"
-              step="0.01"
-            />
-          </div>
-          <div class="form-group">
-            <label for="sgstRate">SGST Rate (%)</label>
-            <input
-              type="number"
-              id="sgstRate"
-              value=""
-              min="0"
-              max="100"
-              step="0.01"
-            />
-          </div>
-          <div class="form-group">
-            <label for="igstRate">IGST Rate (%)</label>
-            <input
-              type="number"
-              id="igstRate"
-              value=""
-              min="0"
-              max="100"
-              step="0.01"
-            />
-          </div>
 
           <h3>Receiver Details (Bill To)</h3>
           <div class="form-group">
@@ -133,7 +100,7 @@
                 <th>Qty</th>
                 <th>Unit</th>
                 <th>Rate</th>
-                <th>Discount</th>
+                <th>Gst %</th>
                 <th>Amount</th>
               </tr>
             </thead>
@@ -144,35 +111,21 @@
                   <input type="text" class="item-hsn" placeholder="HSN Code" />
                 </td>
                 <td>
-                  <input
-                    type="text"
-                    class="item-desc"
-                    placeholder="Item description"
-                  />
+                  <input type="text" class="item-desc" placeholder="Item" />
                 </td>
                 <td>
                   <input type="text" class="item-qty" />
                 </td>
                 <td>
-                  <input type="number" class="item-unit" value="1" min="1" />
+                  <input type="number" class="item-unit" min="1" />
                 </td>
                 <td>
-                  <input
-                    type="number"
-                    class="item-rate"
-                    value="0.00"
-                    step="0.01"
-                  />
+                  <input type="number" class="item-rate" />
                 </td>
                 <td>
-                  <input
-                    type="number"
-                    class="item-discount"
-                    value="0.00"
-                    step="0.01"
-                  />
+                  <input type="number" class="gst" />
                 </td>
-                <td class="item-amount">0.00</td>
+                <td class="item-amount"></td>
               </tr>
             </tbody>
           </table>
