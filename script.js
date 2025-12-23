@@ -217,11 +217,11 @@ function updateInvoicePreview() {
   // Generate Invoice Preview HTML
   invoicePreview.innerHTML = `
     <div class="company-header">
-      <div class="company-name">SURYALAKSHMI TRADERS</div>
+      <div class="company-name">MAHADEV02</div>
       <div class="company-address">H.NO, PVT SV-1605, KH NO.159, GALI NO.5/11, SAMTA VIHAR MUKUNDPUR, NEW DELHI-110042</div>
       <div class="company-contact">Deals in: Paints, Epoxy Paints, Putty, Water Proofing, Primer, Hardware & Work contract</div>
-      <div class="company-contact">Mobile: 9729708912, 8168239664 | E-mail: suryalakshmitraders98@gmail.com</div>
-      <div class="company-contact">GSTN: 07ESVPK4501D1ZP</div>
+      <div class="company-contact">Mobile: 9729708912, 8168239664 | E-mail: mahadev02@gmail.com</div>
+      <div class="company-contact">GSTN: 07ESVXXXXX1D1ZP</div>
     </div>
 
     <div class="invoice-title">INVOICE</div>
@@ -320,7 +320,7 @@ function updateInvoicePreview() {
       <div class="bottom-section">
         <div class="left-column">
           <div class="bank-details">
-            <p><strong>SURYALAKSHMI TRADERS</strong></p>
+            <p><strong>MAHADEV02</strong></p>
             <p>BANK - YES BANK | A/C NO - 062261900003140</p>
             <p>RTGS/IFSC CODE - YESB0000622</p>
             <p>Branch - Rohini Sector 18, New Delhi 110085</p>
@@ -334,7 +334,7 @@ function updateInvoicePreview() {
 
         <div class="signature">
           <img src="sign.jpg" alt="Signature" width="100" /> 
-          <p>For SURYALAKSHMI TRADERS</p>
+          <p>For MAHADEV02</p>
           <p>Authorised Sign.</p>
           <p>Customer's Signature</p>
         </div>
